@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Dessert } from '../data/dessert';
 import { DessertFilter } from '../data/dessert-filter';
@@ -23,7 +23,12 @@ export class DessertsComponent implements OnInit {
   englishName = signal('');
   loading = signal(false);
 
+  ratings = signal<DessertIdToRatingMap>({});
   desserts = signal<Dessert[]>([]);
+
+  dessertsWithRatings = computed(() => this.toRated(this.desserts(), this.ratings()));
+  
+
 
   ngOnInit(): void {
     this.search();
